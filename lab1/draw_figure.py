@@ -7,7 +7,7 @@ from time import time
 def draw_current(points, edges, path):
     start_time = time()
     plt.figure()
-    plt.scatter(points[:, 0], points[:, 1], color='blue', label='Points')
+    plt.scatter(points[:, 0], points[:, 1], color='blue', label='Points', s=10)
     for edge in edges:
         plt.plot([points[edge[0], 0], points[edge[1], 0]], [points[edge[0], 1], points[edge[1], 1]], color='red', label='Edges')
     plt.savefig(path)

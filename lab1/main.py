@@ -1,5 +1,6 @@
 # 求解凸包问题：输入是平面上 n 个点的集合 Q，凸包问题是要输出一个 Q 的凸包。其中，Q 的凸包是一个凸多边形 P，Q 中的点或者在 P 上或者在 P 中。
 import os
+import shutil
 
 from data_generation import generate_data
 from draw_figure import draw_current, gen_gif, draw_time
@@ -22,8 +23,10 @@ def run(data_num):
     for method in METHODS:
         # 生成数据文件夹
         data_path = os.path.join(DATA_DIR, method)
-        if not os.path.exists(data_path):
-            os.makedirs(data_path)
+        if os.path.exists(data_path):
+            shutil.rmtree(data_path)
+        os.makedirs(data_path)
+            
         # 运行算法
         time = METHODS[method](data, data_path)
         time_dict[method] = time
