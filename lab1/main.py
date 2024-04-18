@@ -9,9 +9,9 @@ from enumeration import enumeration
 from graham_scan import graham_scan
 
 METHODS = {
-    # "DC": divide_conquer,
+    "DC": divide_conquer,
     "ENUM": enumeration,
-    # "GS": graham_scan
+    "GS": graham_scan
 }
 DATA_DIR = "./lab1/results"
 
@@ -19,29 +19,30 @@ def run(data_num):
     time_dict = {}
     # 生成数据
     data = generate_data(data_num)
-
     for method in METHODS:
         # 生成数据文件夹
-        data_path = os.path.join(DATA_DIR, method)
-        if os.path.exists(data_path):
-            shutil.rmtree(data_path)
+        data_path = os.path.join(DATA_DIR, f"{data_num}", method)
         os.makedirs(data_path)
             
         # 运行算法
-        time = METHODS[method](data, data_path)
+        time = METHODS[method](data, data_path,True if data_num == 1000 else False)
         time_dict[method] = time
-    # 生成动图
-    gen_gif(data_path, "convex_hull.gif")
+        # 生成动图
+        gen_gif(data_path, "convex_hull.gif")
     return time_dict
 
 def main():
-    time_recoder = {"DC": [], "ENUM": [], "GS": []}
-    for i in range(1000, 10000, 1000):
+    shutil.rmtree(DATA_DIR, ignore_errors=True)
+    time_recoder = {}
+    for method in METHODS:
+        time_recoder[method] = []
+    ran = range(1000, 11000, 1000)
+    for i in ran:
         time_dict = run(i)
         for method in time_dict:
             time_recoder[method].append(time_dict[method])
     
-    draw_time(time_recoder, os.path.join(DATA_DIR, "time.png"))
+    draw_time(time_recoder, ran, DATA_DIR)
         
     
 

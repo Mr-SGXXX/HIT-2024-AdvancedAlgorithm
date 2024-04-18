@@ -5,49 +5,70 @@ import numpy as np
 
 from draw_figure import draw_current
 
-def enumeration(points:np.ndarray, data_path):
-    draw_current(points, [], os.path.join(data_path, "0.png"))
-    original_points = points
+def enumeration(points:np.ndarray, data_path, draw_flag=False):
     start = time()
-    figure_time = 0
+    figure_time = draw_current(points, [], os.path.join(data_path, "0.png"))
+    original_points = points
     points_num = len(points)
+    deleted_percent = 0
     i = 0
     while True:
-        last_points_num = points_num
-        if i == points_num:
+        if i >= points_num:
             break
-        j = i + 1
+        j = 0
         while True:
-            if j == points_num:
+            if j >= points_num:
                 break
-            k = j + 1
+            if i == j:
+                j += 1
+                continue
+            k = 0
             while True:
                 if k >= points_num:
                     break
-                p = k + 1
+                if i == k or j == k:
+                    k += 1
+                    continue
+                p = 0
                 while True:
                     if p >= points_num:
                         break
+                    if i == p or j == p or k == p:
+                        p += 1
+                        continue
                     if in_triangle(points[i], points[j], points[k], points[p]):
                         points = np.delete(points, p, axis=0)
+                        if (len(original_points) - points_num) % (len(original_points) // 10) == 0 and len(original_points) != points_num:
+                            deleted_percent += 1 
+                            if draw_flag:
+                                figure_time += draw_current(points, [], os.path.join(data_path, f"{deleted_percent}.png"))
                         points_num -= 1
+                        if p < i:
+                            i -= 1
+                        if p < j:
+                            j -= 1
+                        if p < k:
+                            k -= 1
+                        p -= 1
                     p += 1
                 k += 1
             j += 1
         i += 1
-        if last_points_num > points_num:
-            last_points_num = points_num
-            figure_time += draw_current(points, [], os.path.join(data_path, f"{i}.png"))
-                  
-        
     
-    points = sorted(points, key=lambda p: (p[0], p[1]))
+    # 以points[i-1]为参考点，按极角逆时针排序
+    points = np.array(sorted(points, key=lambda p: (np.arctan2(p[1]-points[i-1][1], p[0]-points[i-1][0]), np.linalg.norm(p-points[i-1]))))
+    
+    final_edges = []
     edges = []
     for i in range(points_num):
         j = (i + 1) % points_num
-        edges.append((int(np.where(original_points == points[i])), int(np.where(original_points, points[j]))))
-    figure_time += draw_current(original_points, edges, os.path.join(data_path, f"final.png"))
-    return time() - start - figure_time
+        final_edges.append((int(np.where((original_points == points[i])[:, 0])[0]), int(np.where((original_points == points[j])[:, 0])[0])))
+        edges.append((i, j))
+    if draw_flag:
+        figure_time += draw_current(points, edges, os.path.join(data_path, f"edges.png"))
+    figure_time += draw_current(original_points, final_edges, os.path.join(data_path, f"final.png"))
+    time_cost = time() - start - figure_time
+    return time_cost
 
 
 def in_triangle(p1, p2, p3, p):
