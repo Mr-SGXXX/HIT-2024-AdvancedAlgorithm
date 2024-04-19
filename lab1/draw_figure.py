@@ -30,7 +30,7 @@ def draw_time(time_recoder, ran, dir):
         plt.figure()
         plt.plot(ran, time_recoder[method], label=method)
         plt.xlabel("Data size")
-        plt.ylabel("Time (ms)")
+        plt.ylabel("Time (s)")
         plt.title("Performance of different algorithms")
         plt.legend()
         plt.savefig(os.path.join(dir, f"{method}.png"))

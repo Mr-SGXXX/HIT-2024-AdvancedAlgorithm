@@ -5,10 +5,31 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python 调试程序: 当前文件",
+            "name": "lab1",
             "type": "debugpy",
             "request": "launch",
             "program": "./lab1/main.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "lab2",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./lab2/main.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "lab3",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./lab3/main.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "lab4",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "./lab4/main.py",
             "console": "integratedTerminal"
         }
     ]
