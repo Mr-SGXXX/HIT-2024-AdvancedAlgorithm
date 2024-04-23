@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 
 from generate_data import generate_data 
 from greedy import greedy
@@ -15,6 +16,8 @@ def get_logger(log_dir, description):
     logger.setLevel(level=logging.INFO)
 
     # Set file handler
+    shutil.rmtree(log_dir, ignore_errors=True)
+    os.makedirs(log_dir)
     log_dir = os.path.join(log_dir, f"{description}.log")
     handler = logging.FileHandler(log_dir)
     handler.setLevel(logging.INFO)
