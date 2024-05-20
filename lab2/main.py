@@ -74,9 +74,9 @@ def main():
     }
     
     # find_way(map1_args, two_way=False)
-    find_way(map1_args, two_way=True)
+    # find_way(map1_args, two_way=True)
     # find_way(map2_args, two_way=False)    
-    # find_way(map2_args, two_way=True)
+    find_way(map2_args, two_way=True)
     
     
     
